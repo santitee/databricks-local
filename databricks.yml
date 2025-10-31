@@ -1,0 +1,62 @@
+# Databricks project configuration file
+# This file defines the structure of your Databricks project
+
+# Bundle configuration
+bundle:
+  name: databricks-local-project
+  
+# Targets for different environments
+targets:
+  # Local development target
+  local:
+    mode: development
+    compute_id: local[*]
+    workspace:
+      host: local
+    
+  # Optional: Development target for actual Databricks workspace
+  dev:
+    mode: development
+    workspace:
+      host: https://your-workspace.cloud.databricks.com
+      # Configure authentication as needed
+    
+  # Optional: Production target
+  prod:
+    mode: production
+    workspace:
+      host: https://your-workspace.cloud.databricks.com
+
+# Resources configuration
+resources:
+  jobs:
+    # Example job configuration
+    sample_job:
+      name: "Sample Local Job"
+      tasks:
+        - task_key: "main_task"
+          python_wheel_task:
+            package_name: "databricks_local_project"
+            entry_point: "main"
+          libraries:
+            - pypi:
+                package: "pyspark"
+
+# Artifacts configuration
+artifacts:
+  default:
+    type: whl
+    build: "pip wheel . --no-deps --wheel-dir dist/"
+    path: "./dist/*.whl"
+
+# Include/exclude patterns
+include:
+  - "src/**"
+  - "notebooks/**"
+  - "tests/**"
+
+exclude:
+  - ".git/**"
+  - ".venv/**"
+  - "__pycache__/**"
+  - "*.pyc"
